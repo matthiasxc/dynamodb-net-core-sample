@@ -78,7 +78,7 @@ while (!isTableAvailable) {
 var context = new DynamoDBContext(client);
 ```
 
-# Create an Objecta and Save It
+# Create an Object and Save It
 ```csharp
 // Create our audio state object
 AlexaAudioState currentState = new AlexaAudioState
