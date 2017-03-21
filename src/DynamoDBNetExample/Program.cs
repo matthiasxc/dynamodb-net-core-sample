@@ -21,13 +21,9 @@ namespace DynamoDBNetExample
         public static void Main(string[] args)
         {
 
-            try { 
             Task t = MainAsync(args);
             t.Wait();
-            } catch(Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
+
             Console.WriteLine("Press any key to exit...");
             Console.ReadKey();
         }
@@ -99,29 +95,20 @@ namespace DynamoDBNetExample
                 }
             };
 
-            try
-            {
-                Console.WriteLine("Save an AlexaAudioState object");
-                await context.SaveAsync<AlexaAudioState>(currentState);
+            Console.WriteLine("Save an AlexaAudioState object");
+            await context.SaveAsync<AlexaAudioState>(currentState);
 
-                Console.WriteLine("Getting an AlexaAudioState object");
-                List<ScanCondition> conditions = new List<ScanCondition>();
-                conditions.Add(new ScanCondition("UserId", ScanOperator.Equal, currentState.UserId));
-                var allDocs = await context.ScanAsync<AlexaAudioState>(conditions).GetRemainingAsync();
-                var savedState = allDocs.FirstOrDefault();
+            Console.WriteLine("Getting an AlexaAudioState object");
+            List<ScanCondition> conditions = new List<ScanCondition>();
+            conditions.Add(new ScanCondition("UserId", ScanOperator.Equal, currentState.UserId));
+            var allDocs = await context.ScanAsync<AlexaAudioState>(conditions).GetRemainingAsync();
+            var savedState = allDocs.FirstOrDefault();
 
-                Console.WriteLine("Verifying object...");
-                if (JsonConvert.SerializeObject(savedState) == JsonConvert.SerializeObject(currentState))
-                    Console.WriteLine("Object verified");
-                else
-                    Console.WriteLine("oops, something went wrong");
-
-            }
-            catch(Exception e)
-            {
-                Console.WriteLine(e.Message);
-                Console.WriteLine(e.InnerException);        
-            }
+            Console.WriteLine("Verifying object...");
+            if (JsonConvert.SerializeObject(savedState) == JsonConvert.SerializeObject(currentState))
+                Console.WriteLine("Object verified");
+            else
+                Console.WriteLine("oops, something went wrong");
 
             //Console.WriteLine("Delete table => " + tableName);
             //context.Dispose();
