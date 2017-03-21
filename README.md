@@ -19,13 +19,13 @@ using Amazon.DynamoDBv2.Model;
 using Amazon.Runtime;
 ```
 
-#Set Your AWS Credentials
+# Set Your AWS Credentials
 ```csharp
 BasicAWSCredentials(accessKey, secretKey);
 var client = new AmazonDynamoDBClient(credentials, RegionEndpoint.USEast1);
 ```
 
-#Verify a Table
+# Verify a Table
 
 ```csharp
 var tableResponse = await client.ListTablesAsync();
@@ -35,7 +35,7 @@ if (!tableResponse.TableNames.Contains(tableName))
 }
 ```
 
-#Create a New Table
+# Create a New Table
 ```csharp
 await client.CreateTableAsync(new CreateTableRequest
 {
@@ -63,7 +63,7 @@ await client.CreateTableAsync(new CreateTableRequest
 });
 ```
 
-#Wait for New Table to Create / Become Active
+# Wait for New Table to Create / Become Active
 ```csharp
 bool isTableAvailable = false;
 while (!isTableAvailable) {
@@ -73,12 +73,12 @@ while (!isTableAvailable) {
 }
 ```
 
-#Set Your Context
+# Set Your Context
 ```csharp
 var context = new DynamoDBContext(client);
 ```
 
-#Create an Objecta and Save It
+# Create an Objecta and Save It
 ```csharp
 // Create our audio state object
 AlexaAudioState currentState = new AlexaAudioState
@@ -103,7 +103,7 @@ AlexaAudioState currentState = new AlexaAudioState
 await context.SaveAsync<AlexaAudioState>(currentState);
 ```
 
-#Retrieve a Document
+# Retrieve a Document
 ```csharp
 List<ScanCondition> conditions = new List<ScanCondition>();
 conditions.Add(new ScanCondition("UserId", ScanOperator.Equal, currentState.UserId));
@@ -112,7 +112,7 @@ var savedState = allDocs.FirstOrDefault();
 
 ```
 
-#Delete a Table
+# Delete a Table
 ```csharp
 context.Dispose();
 await client.DeleteTableAsync(new DeleteTableRequest() { TableName = tableName });
